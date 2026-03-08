@@ -1,4 +1,5 @@
 using Core.Events;
+using Core.Teams;
 using Creeps.Behaviour;
 using UnityEngine;
 using VContainer;
@@ -12,6 +13,12 @@ namespace Creeps
         
         // Factory behaviours
         private IMovementBehaviour _movementBehaviour;
+
+        // State
+        private Team _team;
+        
+        // Visual
+        private TeamVisual _teamVisual;
         
         [Inject]
         public void Construct(IEventBus eventBus)
@@ -19,9 +26,17 @@ namespace Creeps
             _eventBus = eventBus;
         }
         
-        public void Initialize(IMovementBehaviour movementBehaviour)
+        private void Awake()
+        {
+            _teamVisual = GetComponentInChildren<TeamVisual>();
+        }
+        
+        public void Initialise(IMovementBehaviour movementBehaviour, Team team)
         {
             _movementBehaviour = movementBehaviour;
+            _team = team;
+            
+            _teamVisual.SetTeam(team);
         }
         
         private void Update()

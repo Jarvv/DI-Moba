@@ -1,4 +1,5 @@
 using System;
+using Core.Teams;
 using UnityEngine;
 
 namespace Lanes
@@ -9,14 +10,21 @@ namespace Lanes
         public struct Lane
         {
             public string Name;
-            public Transform[] Waypoints;
+            public Transform[] BlueWaypoints;
+            public Transform[] RedWaypoints;
         }
 
         public Lane[] Lanes;
         
-        public Vector3 GetSpawnPoint(int laneIndex)
+        public Vector3 GetSpawnPoint(int laneIndex, Team team)
         {
-            return Lanes[laneIndex].Waypoints[0].position;
+            Lane lane = Lanes[laneIndex];
+            return team switch
+            {
+                Team.Red => lane.RedWaypoints[0].position,
+                Team.Blue => lane.BlueWaypoints[0].position,
+                _ => Vector3.zero
+            };
         }
     }
 }

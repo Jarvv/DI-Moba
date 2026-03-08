@@ -1,3 +1,4 @@
+using Core.Teams;
 using Creeps.Behaviour;
 using Unity.VisualScripting;
 using UnityEngine;
@@ -15,7 +16,7 @@ namespace Creeps
             _objectResolver = objectResolver;
         }
         
-        public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints)
+        public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team)
         {
             GameObject creepGO = _objectResolver.Instantiate(creepDefinition.Prefab, position, Quaternion.identity);
             Creep creep = creepGO.GetComponent<Creep>();
@@ -23,12 +24,12 @@ namespace Creeps
             IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
             movement.Initialise(waypoints);
              
-            creep.Initialize(movement);
+            creep.Initialise(movement, team);
             
             return creep;
         }
 
-        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints)
+        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team)
         {
             creep.Reset();
             creep.transform.position = position;
@@ -37,13 +38,13 @@ namespace Creeps
             IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
             movement.Initialise(waypoints);
 
-            creep.Initialize(movement);
+            creep.Initialise(movement, team);
         }
     }
     
     public interface ICreepFactory
     {
-        public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints);
-        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints);
+        public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team);
+        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team);
     }
 }

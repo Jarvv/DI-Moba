@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Teams;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -16,18 +17,18 @@ namespace Creeps
             _creepFactory = creepFactory;
         }
         
-        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints)
+        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints, Team team)
         {
             Creep creep;
             
             if (_inactive.Count > 0)
             {
                 creep = _inactive.Dequeue();
-                _creepFactory.Reinitialise(creep, definition, position, waypoints);
+                _creepFactory.Reinitialise(creep, definition, position, waypoints, team);
             }
             else
             {
-                creep = _creepFactory.Create(definition, position, waypoints);
+                creep = _creepFactory.Create(definition, position, waypoints, team);
             }
             
             _active.Add(creep);
@@ -45,7 +46,7 @@ namespace Creeps
     
     public interface ICreepPool
     {
-        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints);
+        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints, Team team);
         public void DespawnCreep(Creep creep);
     }
 }

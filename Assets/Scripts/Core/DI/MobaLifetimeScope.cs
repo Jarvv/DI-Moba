@@ -1,4 +1,5 @@
 using Core.Events;
+using Core.Teams;
 using Creeps;
 using Lanes;
 using UnityEngine;
@@ -15,6 +16,9 @@ namespace Core.DI
         
         [SerializeField]
         private LaneRegistry _laneRegistry;
+        
+        [SerializeField]
+        private TeamColourConfigSO _teamColourConfig;
 
         protected override void Configure(IContainerBuilder builder)
         {
@@ -24,6 +28,7 @@ namespace Core.DI
              // ── Config Instances
             builder.RegisterInstance(_waveConfig);
             builder.RegisterComponent(_laneRegistry);
+            builder.RegisterInstance(_teamColourConfig);
              
             // ── Creep System 
             builder.Register<ICreepFactory, CreepFactory>(Lifetime.Singleton);

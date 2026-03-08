@@ -1,3 +1,4 @@
+using Core.Teams;
 using Lanes;
 using UnityEngine;
 using VContainer;
@@ -20,6 +21,7 @@ namespace Creeps
         private bool _isSpawning = false;
         private float _spawnTimer = 0f;
         private float _staggerTimer = 0f;
+        private readonly Team[] _teams = { Team.Blue, Team.Red };
     
        public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
        {
@@ -65,13 +67,15 @@ namespace Creeps
             
             WaveDefinitionSO wave = _waveConfig.Waves[_currentWaveIndex];
             CreepGroup group = wave.CreepGroups[_currentGroupIndex];
-            
-            Vector3 spawnPoint = _laneConfig.GetSpawnPoint(_currentLaneIndex);
-            Vector3[] waypoints = _waypointProvider.GetWaypoints(_currentLaneIndex);
-            
-            _creepPool.SpawnCreep(group.Definition, spawnPoint, waypoints);
-            _currentCreepIndex++;
 
+            foreach (Team team in _teams)
+            {
+                Vector3 spawnPoint = _laneConfig.GetSpawnPoint(_currentLaneIndex, team);
+                Vector3[] waypoints = _waypointProvider.GetWaypoints(_currentLaneIndex, team);
+                _creepPool.SpawnCreep(group.Definition, spawnPoint, waypoints, team);
+            }
+
+            _currentCreepIndex++;
             _staggerTimer = group.StaggerDelay;
 
             if(_currentCreepIndex >= group.Count)
