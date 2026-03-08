@@ -1,7 +1,5 @@
-using Core.Combat;
 using Core.Teams;
 using Creeps.Behaviour;
-using Unity.VisualScripting;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -25,7 +23,7 @@ namespace Creeps
             IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
             movement.Initialise(waypoints);
 
-            IAttackBehaviour attack = CreateAttackBehaviour(creepDefinition);
+            IAttackBehaviour attack = creepDefinition.AttackFactory.Create();
 
             creep.Initialise(movement, attack, team, creepDefinition);
 
@@ -41,18 +39,9 @@ namespace Creeps
             IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
             movement.Initialise(waypoints);
 
-            IAttackBehaviour attack = CreateAttackBehaviour(creepDefinition);
+            IAttackBehaviour attack = creepDefinition.AttackFactory.Create();
 
             creep.Initialise(movement, attack, team, creepDefinition);
-        }
-
-        private IAttackBehaviour CreateAttackBehaviour(CreepDefinitionSO creepDefinition)
-        {
-            return creepDefinition.AttackType switch
-            {
-                AttackType.Melee => new MeleeAttack(creepDefinition.AttackRange, creepDefinition.AttackDamage, creepDefinition.AttackSpeed),
-                _ => null
-            };
         }
     }
 

@@ -1,4 +1,4 @@
-using Core.Combat;
+using Creeps.Behaviour;
 using UnityEngine;
 
 namespace Creeps
@@ -12,9 +12,6 @@ namespace Creeps
         public float Speed;
 
         [Header("Attack")]
-        public AttackType AttackType;
-        public float AttackRange;
-        public float AttackDamage;
-        public float AttackSpeed;
+        public AttackBehaviourFactory AttackFactory;
     }
 }
