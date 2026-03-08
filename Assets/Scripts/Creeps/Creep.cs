@@ -44,9 +44,9 @@ namespace Creeps
             _movementBehaviour.Tick(transform, Time.deltaTime);
         }
         
-        public void Reset()
+        public void ResetState()
         {
-            _movementBehaviour.Reset();
+            _movementBehaviour?.ResetState();
         }
     }
 }

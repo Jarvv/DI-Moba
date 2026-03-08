@@ -31,7 +31,7 @@ namespace Creeps
 
         public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team)
         {
-            creep.Reset();
+            creep.ResetState();
             creep.transform.position = position;
             creep.gameObject.SetActive(true);
 

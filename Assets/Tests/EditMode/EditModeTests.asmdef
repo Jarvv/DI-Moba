@@ -1,0 +1,27 @@
+{
+    "name": "EditModeTests",
+    "rootNamespace": "",
+    "references": [
+        "GUID:ec3bcff466c55cf419263761e57b6cb1",
+        "GUID:ea993ca4d1d19a347a2ca9059bdd60c1",
+        "GUID:f624ff6fe52b16742bf002dd83224351",
+        "GUID:bf63adaaef67be94aa2620090da9945e",
+        "GUID:93be225b74ab0bc458deaef16118fa9f",
+        "GUID:b840dcf4b37f26143aebfa1e3910fd19"
+    ],
+    "includePlatforms": [
+        "Editor"
+    ],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": true,
+    "precompiledReferences": [
+        "nunit.framework.dll"
+    ],
+    "autoReferenced": false,
+    "defineConstraints": [
+        "UNITY_INCLUDE_TESTS"
+    ],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

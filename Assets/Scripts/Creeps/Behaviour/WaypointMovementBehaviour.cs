@@ -43,7 +43,7 @@ namespace Creeps.Behaviour
                 _currentWaypointIndex++;
         }
         
-        public void Reset()
+        public void ResetState()
         {
             _currentWaypointIndex = 0;
         }

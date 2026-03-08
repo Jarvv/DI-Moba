@@ -38,15 +38,20 @@ namespace Game
 
         public void Tick()
         {
-            if(_isSpawning)
+            Tick(Time.deltaTime);
+        }
+
+        public void Tick(float deltaTime)
+        {
+            if (_isSpawning)
             {
-                StaggerSpawn();
+                StaggerSpawn(deltaTime);
                 return;
             }
 
-            _spawnTimer -= Time.deltaTime;
+            _spawnTimer -= deltaTime;
 
-            if(_spawnTimer <= 0f)
+            if (_spawnTimer <= 0f)
             {
                 BeginWave();
                 _spawnTimer = _waveConfig.TimeBetweenWaves;
@@ -60,10 +65,10 @@ namespace Game
             _staggerTimer = 0f;
         }
 
-        private void StaggerSpawn()
+        private void StaggerSpawn(float deltaTime)
         {
-            _staggerTimer -= Time.deltaTime;
-            if(_staggerTimer > 0f) return;
+            _staggerTimer -= deltaTime;
+            if (_staggerTimer > 0f) return;
 
             WaveDefinitionSO wave = _waveConfig.Waves[_currentWaveIndex];
             CreepGroup group = wave.CreepGroups[_currentGroupIndex];
@@ -78,13 +83,13 @@ namespace Game
             _currentCreepIndex++;
             _staggerTimer = group.StaggerDelay;
 
-            if(_currentCreepIndex >= group.Count)
+            if (_currentCreepIndex >= group.Count)
             {
                 _currentCreepIndex = 0;
                 _currentGroupIndex++;
             }
 
-            if(_currentGroupIndex >= wave.CreepGroups.Length)
+            if (_currentGroupIndex >= wave.CreepGroups.Length)
             {
                 _isSpawning = false;
                 _currentWaveIndex++;

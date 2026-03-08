@@ -6,6 +6,6 @@ namespace Creeps.Behaviour
     {
         public void Initialise(Vector3[] waypoints);
         public void Tick(Transform creepTransform, float deltaTime);
-        public void Reset();
+        public void ResetState();
     }
 }

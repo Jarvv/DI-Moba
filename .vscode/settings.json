@@ -66,5 +66,5 @@
     "explorer.fileNesting.patterns": {
         "*.sln": "*.csproj"
     },
-    "dotnet.defaultSolution": "DI-Moba.sln"
+    "dotnet.defaultSolution": "DI-Moba.slnx"
 }
