@@ -1,11 +1,11 @@
 using Core.Teams;
+using Creeps;
 using Lanes;
 using UnityEngine;
-using VContainer;
 using VContainer.Unity;
 using Waves;
 
-namespace Creeps
+namespace Game
 {
     public class CreepSpawner : IStartable, ITickable
     {
@@ -13,7 +13,7 @@ namespace Creeps
         private WaveConfigSO _waveConfig;
         private LaneRegistry _laneConfig;
         private IWaypointProvider _waypointProvider;
-        
+
         private int _currentWaveIndex = 0;
         private int _currentGroupIndex = 0;
         private int _currentCreepIndex = 0;
@@ -22,14 +22,14 @@ namespace Creeps
         private float _spawnTimer = 0f;
         private float _staggerTimer = 0f;
         private readonly Team[] _teams = { Team.Blue, Team.Red };
-    
-       public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
-       {
+
+        public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
+        {
             _creepPool = creepPool;
             _waveConfig = waveConfig;
             _laneConfig = laneConfig;
             _waypointProvider = waypointProvider;
-       }
+        }
 
         public void Start()
         {
@@ -43,28 +43,28 @@ namespace Creeps
                 StaggerSpawn();
                 return;
             }
-            
+
             _spawnTimer -= Time.deltaTime;
-            
+
             if(_spawnTimer <= 0f)
             {
                 BeginWave();
                 _spawnTimer = _waveConfig.TimeBetweenWaves;
             }
         }
-        
+
         private void BeginWave()
         {
             _isSpawning = true;
             _currentGroupIndex = 0;
             _staggerTimer = 0f;
         }
-        
+
         private void StaggerSpawn()
         {
             _staggerTimer -= Time.deltaTime;
             if(_staggerTimer > 0f) return;
-            
+
             WaveDefinitionSO wave = _waveConfig.Waves[_currentWaveIndex];
             CreepGroup group = wave.CreepGroups[_currentGroupIndex];
 
@@ -83,7 +83,7 @@ namespace Creeps
                 _currentCreepIndex = 0;
                 _currentGroupIndex++;
             }
-            
+
             if(_currentGroupIndex >= wave.CreepGroups.Length)
             {
                 _isSpawning = false;
