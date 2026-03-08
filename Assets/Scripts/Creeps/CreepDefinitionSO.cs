@@ -1,3 +1,4 @@
+using Core.Combat;
 using UnityEngine;
 
 namespace Creeps
@@ -9,5 +10,11 @@ namespace Creeps
         public GameObject Prefab;
         public float Health;
         public float Speed;
+
+        [Header("Attack")]
+        public AttackType AttackType;
+        public float AttackRange;
+        public float AttackDamage;
+        public float AttackSpeed;
     }
 }

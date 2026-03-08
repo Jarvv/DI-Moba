@@ -9,11 +9,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 0}
-  m_Name: Wave1
-  m_EditorClassIdentifier: Assembly-CSharp:Waves:WaveDefinitionSO
-  WaveName: 1
+  m_Script: {fileID: 11500000, guid: 2e988536d9fc5f343ab3564318e3d9b7, type: 3}
+  m_Name: Wave0
+  m_EditorClassIdentifier: Waves::Waves.WaveDefinitionSO
+  WaveName: 0
   CreepGroups:
   - Definition: {fileID: 11400000, guid: 98e1229d74b920c489a8022a3adc2494, type: 2}
-    Count: 5
+    Count: 1
     StaggerDelay: 1

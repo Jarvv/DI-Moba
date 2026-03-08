@@ -15,4 +15,4 @@ MonoBehaviour:
   InitialDelay: 5
   TimeBetweenWaves: 30
   Waves:
-  - {fileID: 11400000, guid: 51a4a1443e959d641bd97501eae51c45, type: 2}
+  - {fileID: 11400000, guid: d4e9a014b02d442df85962cfea814b4e, type: 2}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Core.Events;
 using Core.Teams;
 using UnityEngine;
 using VContainer;
@@ -12,9 +13,15 @@ namespace Creeps
         private readonly Queue<Creep> _inactive = new Queue<Creep>();
         private readonly List<Creep> _active = new List<Creep>();
 
-        public CreepPool(ICreepFactory creepFactory)
+        public CreepPool(ICreepFactory creepFactory, IEventBus eventBus)
         {
             _creepFactory = creepFactory;
+            eventBus.Subscribe<CreepDiedEvent>(OnCreepDied);
+        }
+
+        private void OnCreepDied(CreepDiedEvent e)
+        {
+            DespawnCreep(e.Creep);
         }
         
         public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints, Team team)

@@ -92,7 +92,7 @@ namespace Game
             if (_currentGroupIndex >= wave.CreepGroups.Length)
             {
                 _isSpawning = false;
-                _currentWaveIndex++;
+                _currentWaveIndex = (_currentWaveIndex + 1) % _waveConfig.Waves.Length;
             }
         }
     }

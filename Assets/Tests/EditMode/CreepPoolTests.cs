@@ -1,3 +1,4 @@
+using Core.Events;
 using Core.Teams;
 using Creeps;
 using NUnit.Framework;
@@ -14,7 +15,7 @@ namespace Tests.EditMode
         public void SetUp()
         {
             _factory = new StubCreepFactory();
-            _pool = new CreepPool(_factory);
+            _pool = new CreepPool(_factory, new EventBus());
         }
 
         [TearDown]

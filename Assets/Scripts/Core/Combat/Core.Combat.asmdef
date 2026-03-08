@@ -1,12 +1,8 @@
 {
-    "name": "Creeps",
+    "name": "Core.Combat",
     "rootNamespace": "",
     "references": [
-        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
-        "GUID:b840dcf4b37f26143aebfa1e3910fd19",
-        "GUID:ec3bcff466c55cf419263761e57b6cb1",
-        "GUID:c301b689d987542b2b874b369eef648b",
-        "GUID:bf63adaaef67be94aa2620090da9945e"
+        "GUID:b840dcf4b37f26143aebfa1e3910fd19"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

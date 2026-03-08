@@ -1,3 +1,4 @@
+using Core.Combat;
 using Core.Events;
 using Core.Teams;
 using Creeps;
@@ -14,10 +15,10 @@ namespace Core.DI
     {
         [SerializeField]
         private WaveConfigSO _waveConfig;
-        
+
         [SerializeField]
         private LaneRegistry _laneRegistry;
-        
+
         [SerializeField]
         private TeamColourConfigSO _teamColourConfig;
 
@@ -26,17 +27,20 @@ namespace Core.DI
             // ── Core Services
             builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
 
-             // ── Config Instances
+            // ── Config Instances
             builder.RegisterInstance(_waveConfig);
             builder.RegisterComponent(_laneRegistry);
             builder.RegisterInstance(_teamColourConfig);
-             
+
             // ── Creep System 
             builder.Register<ICreepFactory, CreepFactory>(Lifetime.Singleton);
             builder.Register<ICreepPool, CreepPool>(Lifetime.Singleton);
-            
+
             // ── Lane System 
             builder.Register<IWaypointProvider, WaypointProvider>(Lifetime.Singleton);
+
+            // ── Combat System
+            builder.Register<ITargetFinder, TargetFinder>(Lifetime.Singleton);
 
             // ── EntryPoint
             builder.RegisterEntryPoint<CreepSpawner>();
