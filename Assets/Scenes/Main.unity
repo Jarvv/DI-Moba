@@ -1053,7 +1053,7 @@ MonoBehaviour:
   autoRun: 1
   autoInjectGameObjects: []
   _waveConfig: {fileID: 11400000, guid: f8f423577092fb049a1921bff7b98c5c, type: 2}
-  _laneRegistry: {fileID: 0}
+  _laneRegistry: {fileID: 1258900420}
 --- !u!4 &2122245800
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 using Core.Events;
+using Creeps.Behaviour;
 using UnityEngine;
 using VContainer;
 
@@ -10,6 +11,7 @@ namespace Creeps
         private IEventBus _eventBus;
         
         // Factory behaviours
+        private IMovementBehaviour _movementBehaviour;
         
         [Inject]
         public void Construct(IEventBus eventBus)
@@ -17,9 +19,19 @@ namespace Creeps
             _eventBus = eventBus;
         }
         
+        public void Initialize(IMovementBehaviour movementBehaviour)
+        {
+            _movementBehaviour = movementBehaviour;
+        }
+        
+        private void Update()
+        {
+            _movementBehaviour.Tick(transform, Time.deltaTime);
+        }
+        
         public void Reset()
         {
-            
+            _movementBehaviour.Reset();
         }
     }
 }

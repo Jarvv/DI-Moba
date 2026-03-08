@@ -25,9 +25,12 @@ namespace Core.DI
             builder.RegisterInstance(_waveConfig);
             builder.RegisterComponent(_laneRegistry);
              
-             // ── Creep System 
+            // ── Creep System 
             builder.Register<ICreepFactory, CreepFactory>(Lifetime.Singleton);
             builder.Register<ICreepPool, CreepPool>(Lifetime.Singleton);
+            
+            // ── Lane System 
+            builder.Register<IWaypointProvider, WaypointProvider>(Lifetime.Singleton);
 
             // ── EntryPoint
             builder.RegisterEntryPoint<CreepSpawner>();

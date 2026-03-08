@@ -16,18 +16,18 @@ namespace Creeps
             _creepFactory = creepFactory;
         }
         
-        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position)
+        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints)
         {
             Creep creep;
             
             if (_inactive.Count > 0)
             {
                 creep = _inactive.Dequeue();
-                _creepFactory.Reinitialise(creep, definition, position);
+                _creepFactory.Reinitialise(creep, definition, position, waypoints);
             }
             else
             {
-                creep = _creepFactory.Create(definition, position);
+                creep = _creepFactory.Create(definition, position, waypoints);
             }
             
             _active.Add(creep);
@@ -45,7 +45,7 @@ namespace Creeps
     
     public interface ICreepPool
     {
-        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position);
+        public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints);
         public void DespawnCreep(Creep creep);
     }
 }

@@ -9,7 +9,7 @@ namespace Waves
     {
         public CreepDefinitionSO Definition;
         public int Count;
-        public float StaggerDelay; // seconds between each creep in the group
+        public float StaggerDelay;
     }
     
     [CreateAssetMenu(fileName = "NewWave", menuName = "MOBA/Wave Definition")]

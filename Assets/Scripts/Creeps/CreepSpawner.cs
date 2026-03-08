@@ -11,19 +11,22 @@ namespace Creeps
         private ICreepPool _creepPool;
         private WaveConfigSO _waveConfig;
         private LaneRegistry _laneConfig;
+        private IWaypointProvider _waypointProvider;
         
         private int _currentWaveIndex = 0;
         private int _currentGroupIndex = 0;
         private int _currentCreepIndex = 0;
+        private int _currentLaneIndex = 0;
         private bool _isSpawning = false;
         private float _spawnTimer = 0f;
         private float _staggerTimer = 0f;
     
-       public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig)
+       public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
        {
             _creepPool = creepPool;
             _waveConfig = waveConfig;
             _laneConfig = laneConfig;
+            _waypointProvider = waypointProvider;
        }
 
         public void Start()
@@ -63,10 +66,14 @@ namespace Creeps
             WaveDefinitionSO wave = _waveConfig.Waves[_currentWaveIndex];
             CreepGroup group = wave.CreepGroups[_currentGroupIndex];
             
-            _creepPool.SpawnCreep(group.Definition, _laneConfig.GetSpawnPoint(_currentGroupIndex));    
+            Vector3 spawnPoint = _laneConfig.GetSpawnPoint(_currentLaneIndex);
+            Vector3[] waypoints = _waypointProvider.GetWaypoints(_currentLaneIndex);
             
+            _creepPool.SpawnCreep(group.Definition, spawnPoint, waypoints);
+            _currentCreepIndex++;
+
             _staggerTimer = group.StaggerDelay;
-            
+
             if(_currentCreepIndex >= group.Count)
             {
                 _currentCreepIndex = 0;
