@@ -1,7 +1,7 @@
 using Core.Combat;
 using UnityEngine;
 
-namespace Creeps.Behaviour
+namespace Creeps.Behaviour.Attack
 {
     public interface IAttackBehaviour
     {

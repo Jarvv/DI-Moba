@@ -9,10 +9,10 @@ namespace Game
 {
     public class CreepSpawner : IStartable, ITickable
     {
-        private ICreepPool _creepPool;
-        private WaveConfigSO _waveConfig;
-        private LaneRegistry _laneConfig;
-        private IWaypointProvider _waypointProvider;
+        private readonly ICreepFactory _creepFactory;
+        private readonly WaveConfigSO _waveConfig;
+        private readonly LaneRegistry _laneConfig;
+        private readonly IWaypointProvider _waypointProvider;
 
         private int _currentWaveIndex = 0;
         private int _currentGroupIndex = 0;
@@ -23,9 +23,9 @@ namespace Game
         private float _staggerTimer = 0f;
         private readonly Team[] _teams = { Team.Blue, Team.Red };
 
-        public CreepSpawner(ICreepPool creepPool, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
+        public CreepSpawner(ICreepFactory creepFactory, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
         {
-            _creepPool = creepPool;
+            _creepFactory = creepFactory;
             _waveConfig = waveConfig;
             _laneConfig = laneConfig;
             _waypointProvider = waypointProvider;
@@ -77,7 +77,7 @@ namespace Game
             {
                 Vector3 spawnPoint = _laneConfig.GetSpawnPoint(_currentLaneIndex, team);
                 Vector3[] waypoints = _waypointProvider.GetWaypoints(_currentLaneIndex, team);
-                _creepPool.SpawnCreep(group.Definition, spawnPoint, waypoints, team);
+                _creepFactory.Create(group.Definition, spawnPoint, waypoints, team);
             }
 
             _currentCreepIndex++;

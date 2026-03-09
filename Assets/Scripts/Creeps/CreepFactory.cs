@@ -1,53 +1,40 @@
+using Core.Pooling;
 using Core.Teams;
-using Creeps.Behaviour;
+using Creeps.Behaviour.Attack;
+using Creeps.Behaviour.Movement;
+using System;
 using UnityEngine;
-using VContainer;
-using VContainer.Unity;
 
 namespace Creeps
 {
     public class CreepFactory : ICreepFactory
     {
-        private readonly IObjectResolver _objectResolver;
+        private readonly GameObjectPool _pool;
 
-        public CreepFactory(IObjectResolver objectResolver)
+        public CreepFactory(GameObjectPool pool)
         {
-            _objectResolver = objectResolver;
+            _pool = pool;
         }
 
         public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team)
         {
-            GameObject creepGO = _objectResolver.Instantiate(creepDefinition.Prefab, position, Quaternion.identity);
-            Creep creep = creepGO.GetComponent<Creep>();
+            Creep creep = _pool.Spawn<Creep>(creepDefinition.Prefab, position, Quaternion.identity);
 
-            IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
+            creep.ResetState();
+
+            IMovementBehaviour movement = creepDefinition.MovementFactory.Create();
             movement.Initialise(waypoints);
 
-            IAttackBehaviour attack = creepDefinition.AttackFactory.Create();
+            IAttackBehaviour attack = creepDefinition.AttackFactory.Create(_pool);
 
             creep.Initialise(movement, attack, team, creepDefinition);
 
             return creep;
-        }
-
-        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team)
-        {
-            creep.ResetState();
-            creep.transform.position = position;
-            creep.gameObject.SetActive(true);
-
-            IMovementBehaviour movement = new WaypointMovementBehaviour(creepDefinition.Speed);
-            movement.Initialise(waypoints);
-
-            IAttackBehaviour attack = creepDefinition.AttackFactory.Create();
-
-            creep.Initialise(movement, attack, team, creepDefinition);
         }
     }
 
     public interface ICreepFactory
     {
         public Creep Create(CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team);
-        public void Reinitialise(Creep creep, CreepDefinitionSO creepDefinition, Vector3 position, Vector3[] waypoints, Team team);
     }
 }

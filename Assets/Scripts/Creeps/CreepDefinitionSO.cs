@@ -1,4 +1,5 @@
-using Creeps.Behaviour;
+using Creeps.Behaviour.Attack;
+using Creeps.Behaviour.Movement;
 using UnityEngine;
 
 namespace Creeps
@@ -9,7 +10,9 @@ namespace Creeps
         public string Name;
         public GameObject Prefab;
         public float Health;
-        public float Speed;
+
+        [Header("Movement")]
+        public MovementBehaviourFactory MovementFactory;
 
         [Header("Attack")]
         public AttackBehaviourFactory AttackFactory;

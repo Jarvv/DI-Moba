@@ -1,4 +1,4 @@
-using Creeps.Behaviour;
+using Creeps.Behaviour.Movement;
 using NUnit.Framework;
 using UnityEngine;
 
@@ -8,6 +8,7 @@ namespace Tests.EditMode
     {
         private WaypointMovementBehaviour _movement;
         private Transform _transform;
+        private Rigidbody _rigidbody;
 
         [SetUp]
         public void SetUp()
@@ -15,6 +16,9 @@ namespace Tests.EditMode
             _movement = new WaypointMovementBehaviour(speed: 10f);
             var go = new GameObject("TestCreep");
             _transform = go.transform;
+            _rigidbody = go.AddComponent<Rigidbody>();
+            _rigidbody.isKinematic = true;
+            _rigidbody.useGravity = false;
         }
 
         [TearDown]
@@ -42,7 +46,7 @@ namespace Tests.EditMode
             _transform.position = Vector3.zero;
             _movement.Initialise(new[] { new Vector3(10, 0, 0) });
 
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
 
             Assert.Greater(_transform.position.x, 0f);
         }
@@ -59,7 +63,7 @@ namespace Tests.EditMode
             _movement.Initialise(waypoints);
 
             // speed=10, dt=0.1 => 1 unit per tick. One tick lands on first waypoint, advancing index.
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
 
             // Second waypoint is far away so we shouldn't have reached end
             Assert.IsFalse(_movement.HasReachedEnd);
@@ -74,7 +78,7 @@ namespace Tests.EditMode
             _movement.Initialise(new[] { new Vector3(1, 0, 0) });
 
             // speed=10, dt=0.1 => moves exactly 1 unit, landing on the waypoint (distance=0 < 0.1 threshold)
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
 
             Assert.IsTrue(_movement.HasReachedEnd);
         }
@@ -85,11 +89,11 @@ namespace Tests.EditMode
             _transform.position = Vector3.zero;
             _movement.Initialise(new[] { new Vector3(1, 0, 0) });
 
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
             Assert.IsTrue(_movement.HasReachedEnd);
 
             Vector3 posAfterEnd = _transform.position;
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
 
             Assert.AreEqual(posAfterEnd, _transform.position);
         }
@@ -99,7 +103,7 @@ namespace Tests.EditMode
         {
             _transform.position = Vector3.zero;
             _movement.Initialise(new[] { new Vector3(1, 0, 0) });
-            _movement.Tick(_transform, 0.1f);
+            _movement.Tick(_rigidbody, 0.1f);
             Assert.IsTrue(_movement.HasReachedEnd);
 
             _movement.ResetState();

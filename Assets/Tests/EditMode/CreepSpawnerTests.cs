@@ -192,21 +192,19 @@ namespace Tests.EditMode
         }
 
         /// <summary>
-        /// Records all SpawnCreep calls without creating real GameObjects.
+        /// Records all creep factory create calls without creating real GameObjects.
         /// </summary>
-        private class SpawnRecorder : ICreepPool
+        private class SpawnRecorder : ICreepFactory
         {
             public int SpawnCount { get; private set; }
             public List<Team> SpawnedTeams { get; } = new();
 
-            public Creep SpawnCreep(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints, Team team)
+            public Creep Create(CreepDefinitionSO definition, Vector3 position, Vector3[] waypoints, Team team)
             {
                 SpawnCount++;
                 SpawnedTeams.Add(team);
                 return null;
             }
-
-            public void DespawnCreep(Creep creep) { }
         }
 
         private class StubWaypointProvider : IWaypointProvider

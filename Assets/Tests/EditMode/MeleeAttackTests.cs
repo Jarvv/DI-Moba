@@ -1,6 +1,6 @@
 using Core.Combat;
 using Core.Teams;
-using Creeps.Behaviour;
+using Creeps.Behaviour.Attack;
 using NUnit.Framework;
 using UnityEngine;
 

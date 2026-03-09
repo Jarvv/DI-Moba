@@ -1,5 +1,6 @@
 using Core.Combat;
 using Core.Events;
+using Core.Pooling;
 using Core.Teams;
 using Creeps;
 using Game;
@@ -26,15 +27,16 @@ namespace Core.DI
         {
             // ── Core Services
             builder.Register<IEventBus, EventBus>(Lifetime.Singleton);
+            builder.Register<GameObjectPool>(Lifetime.Singleton);
 
             // ── Config Instances
             builder.RegisterInstance(_waveConfig);
             builder.RegisterComponent(_laneRegistry);
             builder.RegisterInstance(_teamColourConfig);
 
-            // ── Creep System 
+            // ── Creep System
             builder.Register<ICreepFactory, CreepFactory>(Lifetime.Singleton);
-            builder.Register<ICreepPool, CreepPool>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<CreepLifecycle>();
 
             // ── Lane System 
             builder.Register<IWaypointProvider, WaypointProvider>(Lifetime.Singleton);

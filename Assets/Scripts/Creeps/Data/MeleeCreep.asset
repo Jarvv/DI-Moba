@@ -10,10 +10,10 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 4df9acd0f5330b14fb8bd9157ed418b7, type: 3}
-  m_Name: BasicCreep
+  m_Name: MeleeCreep
   m_EditorClassIdentifier: 
-  Name: BasicCreep
+  Name: MeleeCreep
   Prefab: {fileID: 6082638827882834131, guid: 5ad345e9b87488c4e820e6e455a090dc, type: 3}
   Health: 10
-  Speed: 1
+  MovementFactory: {fileID: 11400000, guid: 3d2e5ea5bbd5242ddb79ccc764fc42df, type: 2}
   AttackFactory: {fileID: 11400000, guid: f7fa751a506ed499a80571f123b51fae, type: 2}
