@@ -4,6 +4,7 @@ using Core.Pooling;
 using Core.Teams;
 using Creeps;
 using Game;
+using Game.UI;
 using Lanes;
 using UnityEngine;
 using VContainer;
@@ -23,6 +24,9 @@ namespace Core.DI
         [SerializeField]
         private TeamColourConfigSO _teamColourConfig;
 
+        [SerializeField]
+        private Team _localPlayerTeam = Team.Blue;
+
         protected override void Configure(IContainerBuilder builder)
         {
             // ── Core Services
@@ -38,6 +42,15 @@ namespace Core.DI
             builder.Register<ICreepFactory, CreepFactory>(Lifetime.Singleton);
             builder.RegisterEntryPoint<CreepLifecycle>();
 
+            // ── Player/Economy
+            builder.RegisterInstance<IPlayerContext>(new PlayerContext(_localPlayerTeam));
+            builder.Register<ITeamEconomy, TeamEconomy>(Lifetime.Singleton);
+            builder.RegisterEntryPoint<CreepGoldRewardSystem>();
+            builder.RegisterEntryPoint<GoldViewModel>();
+
+            // ── Views
+            builder.RegisterComponentInHierarchy<GoldView>();
+
             // ── Lane System 
             builder.Register<IWaypointProvider, WaypointProvider>(Lifetime.Singleton);
 
@@ -49,4 +62,3 @@ namespace Core.DI
         }
     }
 }
-

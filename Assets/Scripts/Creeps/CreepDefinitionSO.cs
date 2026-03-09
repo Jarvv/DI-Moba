@@ -10,6 +10,7 @@ namespace Creeps
         public string Name;
         public GameObject Prefab;
         public float Health;
+        public int GoldReward = 1;
 
         [Header("Movement")]
         public MovementBehaviourFactory MovementFactory;

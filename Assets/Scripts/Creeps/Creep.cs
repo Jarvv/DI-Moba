@@ -116,7 +116,12 @@ namespace Creeps
         private void Die(IDamageSource source)
         {
             _isActive = false;
-            _eventBus.Publish(new CreepDiedEvent { Creep = this });
+            _eventBus.Publish(new CreepDiedEvent
+            {
+                Creep = this,
+                KillerTeam = source != null ? source.Team : null,
+                GoldReward = _definition.GoldReward
+            });
         }
 
         public void ResetState()
