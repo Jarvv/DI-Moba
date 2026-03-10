@@ -1,7 +1,7 @@
-using Core.Combat;
 using Core.Teams;
 using Creeps.Behaviour.Attack;
 using NUnit.Framework;
+using Tests.EditMode.Stubs;
 using UnityEngine;
 
 namespace Tests.EditMode
@@ -10,8 +10,8 @@ namespace Tests.EditMode
     {
         private MeleeAttack _attack;
         private Transform _owner;
-        private DummyTarget _target;
-        private DummySource _source;
+        private StubDamageable _target;
+        private StubDamageSource _source;
 
         [SetUp]
         public void SetUp()
@@ -19,8 +19,8 @@ namespace Tests.EditMode
             _attack = new MeleeAttack(range: 2f, damage: 5f, attackSpeed: 2f);
             var go = new GameObject("Owner");
             _owner = go.transform;
-            _target = new DummyTarget(health: 20f, Team.Red, Vector3.zero);
-            _source = new DummySource(5f, Team.Blue);
+            _target = new StubDamageable(health: 20f, Team.Red, Vector3.zero);
+            _source = new StubDamageSource(5f, Team.Blue);
         }
 
         [TearDown]
@@ -83,6 +83,17 @@ namespace Tests.EditMode
         }
 
         [Test]
+        public void Execute_Raises_DamageTaken_On_Target()
+        {
+            float received = 0f;
+            _target.DamageTaken += amount => received = amount;
+
+            _attack.Execute(_owner, _target, _source);
+
+            Assert.AreEqual(5f, received);
+        }
+
+        [Test]
         public void ResetState_Clears_Cooldown()
         {
             _attack.Execute(_owner, _target, _source);
@@ -90,40 +101,6 @@ namespace Tests.EditMode
 
             _attack.ResetState();
             Assert.IsTrue(_attack.IsReady);
-        }
-
-        private class DummyTarget : IDamageable
-        {
-            public float CurrentHealth { get; private set; }
-            public float MaxHealth { get; }
-            public Team Team { get; }
-            public Vector3 Position { get; }
-            public bool IsAlive => CurrentHealth > 0;
-
-            public DummyTarget(float health, Team team, Vector3 position)
-            {
-                CurrentHealth = health;
-                MaxHealth = health;
-                Team = team;
-                Position = position;
-            }
-
-            public void TakeDamage(float amount, IDamageSource source)
-            {
-                CurrentHealth -= amount;
-            }
-        }
-
-        private class DummySource : IDamageSource
-        {
-            public float Damage { get; }
-            public Team Team { get; }
-
-            public DummySource(float damage, Team team)
-            {
-                Damage = damage;
-                Team = team;
-            }
         }
     }
 }

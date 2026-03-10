@@ -36,18 +36,15 @@ namespace Creeps.Behaviour.Movement
             Vector3 direction = (targetPlanar - currentPlanar).normalized;
 
             Vector3 nextPosition = currentPosition + direction * _speed * deltaTime;
-            creepRigidbody.MovePosition(nextPosition);
+            creepRigidbody.position = nextPosition;
 
             // Rotate to face movement direction
             if (direction != Vector3.zero)
             {
-                Quaternion currentRotation = creepRigidbody.rotation;
-                Quaternion targetRotation = Quaternion.Slerp(
-                    currentRotation,
+                creepRigidbody.rotation = Quaternion.Slerp(
+                    creepRigidbody.rotation,
                     Quaternion.LookRotation(direction),
                     deltaTime * 10f);
-
-                creepRigidbody.MoveRotation(targetRotation);
             }
 
             Vector3 nextPlanar = new Vector3(nextPosition.x, 0f, nextPosition.z);

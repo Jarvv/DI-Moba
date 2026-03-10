@@ -1,3 +1,4 @@
+using System;
 using Core.Combat;
 using Core.Events;
 using Core.Teams;
@@ -37,6 +38,9 @@ namespace Creeps
         public float MaxHealth => _definition.Health;
         public Team Team => _team;
         public bool IsAlive => _isActive && _currentHealth > 0;
+
+        // IDamageable events
+        public event Action<float> DamageTaken;
 
         // IDamageSource
         public float Damage => _attackBehaviour.Damage;
@@ -106,6 +110,7 @@ namespace Creeps
             if (!_isActive) return;
 
             _currentHealth -= amount;
+            DamageTaken?.Invoke(amount);
 
             if (_currentHealth <= 0)
             {

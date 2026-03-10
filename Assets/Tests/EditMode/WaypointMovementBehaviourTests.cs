@@ -48,7 +48,7 @@ namespace Tests.EditMode
 
             _movement.Tick(_rigidbody, 0.1f);
 
-            Assert.Greater(_transform.position.x, 0f);
+            Assert.Greater(_rigidbody.position.x, 0f);
         }
 
         [Test]
@@ -68,7 +68,7 @@ namespace Tests.EditMode
             // Second waypoint is far away so we shouldn't have reached end
             Assert.IsFalse(_movement.HasReachedEnd);
             // Position should be at or past the first waypoint
-            Assert.GreaterOrEqual(_transform.position.x, 1f);
+            Assert.GreaterOrEqual(_rigidbody.position.x, 1f);
         }
 
         [Test]
@@ -92,10 +92,10 @@ namespace Tests.EditMode
             _movement.Tick(_rigidbody, 0.1f);
             Assert.IsTrue(_movement.HasReachedEnd);
 
-            Vector3 posAfterEnd = _transform.position;
+            Vector3 posAfterEnd = _rigidbody.position;
             _movement.Tick(_rigidbody, 0.1f);
 
-            Assert.AreEqual(posAfterEnd, _transform.position);
+            Assert.AreEqual(posAfterEnd, _rigidbody.position);
         }
 
         [Test]

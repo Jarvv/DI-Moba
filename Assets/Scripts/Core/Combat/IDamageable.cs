@@ -1,3 +1,4 @@
+using System;
 using Core.Teams;
 using UnityEngine;
 
@@ -10,6 +11,7 @@ namespace Core.Combat
         Team Team { get; }
         Vector3 Position { get; }
         bool IsAlive { get; }
+        event Action<float> DamageTaken;
         void TakeDamage(float amount, IDamageSource source);
     }
 }
