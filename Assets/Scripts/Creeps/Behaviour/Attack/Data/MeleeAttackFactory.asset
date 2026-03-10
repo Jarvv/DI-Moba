@@ -14,4 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Creeps::Creeps.Behaviour.MeleeAttackFactory
   Range: 2
   Damage: 5
-  AttackSpeed: 2
+  AttackSpeed: 0.25

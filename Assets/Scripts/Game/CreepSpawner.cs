@@ -17,7 +17,6 @@ namespace Game
         private int _currentWaveIndex = 0;
         private int _currentGroupIndex = 0;
         private int _currentCreepIndex = 0;
-        private int _currentLaneIndex = 0;
         private bool _isSpawning = false;
         private float _spawnTimer = 0f;
         private float _staggerTimer = 0f;
@@ -73,11 +72,14 @@ namespace Game
             WaveDefinitionSO wave = _waveConfig.Waves[_currentWaveIndex];
             CreepGroup group = wave.CreepGroups[_currentGroupIndex];
 
-            foreach (Team team in _teams)
+            for (int lane = 0; lane < _laneConfig.Lanes.Length; lane++)
             {
-                Vector3 spawnPoint = _laneConfig.GetSpawnPoint(_currentLaneIndex, team);
-                Vector3[] waypoints = _waypointProvider.GetWaypoints(_currentLaneIndex, team);
-                _creepFactory.Create(group.Definition, spawnPoint, waypoints, team);
+                foreach (Team team in _teams)
+                {
+                    Vector3 spawnPoint = _laneConfig.GetSpawnPoint(lane, team);
+                    Vector3[] waypoints = _waypointProvider.GetWaypoints(lane, team);
+                    _creepFactory.Create(group.Definition, spawnPoint, waypoints, team);
+                }
             }
 
             _currentCreepIndex++;

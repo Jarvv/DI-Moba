@@ -14,5 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Creeps::Creeps.Behaviour.Attack.RangedAttackFactory
   Range: 5
   Damage: 2
-  AttackSpeed: 2
+  AttackSpeed: 0.5
   ProjectilePrefab: {fileID: 3468736195362407916, guid: 664534383e03340b1a624617150941cd, type: 3}

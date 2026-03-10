@@ -9,6 +9,7 @@ namespace Core.Pooling
     public class GameObjectPool
     {
         private readonly IObjectResolver _resolver;
+        private readonly Transform _root;
         private readonly Dictionary<GameObject, Queue<GameObject>> _pools = new();
         private readonly Dictionary<GameObject, GameObject> _instanceToPrefab = new();
 
@@ -16,6 +17,8 @@ namespace Core.Pooling
         {
             _resolver = resolver;
             eventBus.Subscribe<DespawnRequestEvent>(e => Despawn(e.GameObject));
+
+            _root = new GameObject("[Pool]").transform;
         }
 
         public GameObject Spawn(GameObject prefab, Vector3 position, Quaternion rotation)
@@ -24,6 +27,7 @@ namespace Core.Pooling
 
             if (TryGetFromPool(prefab, out instance))
             {
+                instance.transform.SetParent(null);
                 instance.transform.SetPositionAndRotation(position, rotation);
                 instance.SetActive(true);
             }
@@ -45,6 +49,7 @@ namespace Core.Pooling
         public void Despawn(GameObject instance)
         {
             instance.SetActive(false);
+            instance.transform.SetParent(_root);
 
             if (_instanceToPrefab.TryGetValue(instance, out var prefab))
             {
