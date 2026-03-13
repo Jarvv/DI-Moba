@@ -4,8 +4,9 @@ namespace Creeps.Behaviour.Movement
 {
     public interface IMovementBehaviour
     {
-        public void Initialise(Vector3[] waypoints);
-        public void Tick(Rigidbody creepRigidbody, float deltaTime);
-        public void ResetState();
+        float Speed { get; }
+        void Initialise(Vector3[] waypoints);
+        void Tick(Rigidbody creepRigidbody, float deltaTime);
+        void ResetState();
     }
 }

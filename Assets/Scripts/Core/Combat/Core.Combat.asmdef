@@ -2,7 +2,8 @@
     "name": "Core.Combat",
     "rootNamespace": "",
     "references": [
-        "GUID:b840dcf4b37f26143aebfa1e3910fd19"
+        "GUID:b840dcf4b37f26143aebfa1e3910fd19",
+        "GUID:38de98ab792ec40c2ab848230592b278"
     ],
     "includePlatforms": [],
     "excludePlatforms": [],

@@ -2,7 +2,6 @@ using System;
 using Core.Combat;
 using Core.Events;
 using Core.Teams;
-using Creeps.Behaviour.Attack;
 using Creeps.Behaviour.Movement;
 using UnityEngine;
 using VContainer;
@@ -25,7 +24,9 @@ namespace Creeps
         private float _currentHealth;
         private bool _isActive;
         private bool _shouldMove;
+        private IDamageable _chaseTarget;
         private Rigidbody _rigidbody;
+        private Collider _collider;
         private Vector3 _bodyInitialLocalPosition;
         private Quaternion _bodyInitialLocalRotation;
 
@@ -33,6 +34,7 @@ namespace Creeps
         private TeamVisual _teamVisual;
 
         // IDamageable
+        public Collider Collider => _collider;
         public Vector3 Position => _rigidbody.position;
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _definition.Health;
@@ -56,6 +58,7 @@ namespace Creeps
         {
             _teamVisual = GetComponentInChildren<TeamVisual>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
+            _collider = _rigidbody.GetComponent<Collider>();
 
             _bodyInitialLocalPosition = _rigidbody.transform.localPosition;
             _bodyInitialLocalRotation = _rigidbody.transform.localRotation;
@@ -81,28 +84,39 @@ namespace Creeps
 
         private void Update()
         {
+            if (!_isActive) return;
+
             _attackBehaviour.Tick(Time.deltaTime);
 
             Team enemyTeam = _team == Team.Red ? Team.Blue : Team.Red;
-            IDamageable target = _targetFinder.FindTarget(Position, _attackBehaviour.Range, enemyTeam, TargetPriority.Nearest);
-            bool targetInRange = target != null && IsTargetInRange(target);
+            IDamageable acquiredTarget = _targetFinder.FindTarget(Position, _definition.AcquisitionRange, enemyTeam, TargetPriority.Nearest);
+            IDamageable attackTarget = _targetFinder.FindTarget(Position, _attackBehaviour.Range, enemyTeam, TargetPriority.Nearest);
 
-            if (targetInRange && _attackBehaviour.IsReady)
+            if (attackTarget != null && _attackBehaviour.IsReady)
             {
-                _attackBehaviour.Execute(_rigidbody.transform, target, this);
+                _attackBehaviour.Execute(_rigidbody.transform, attackTarget, this);
             }
 
-            // Keep moving until we are actually in attack range.
-            _shouldMove = !targetInRange;
+            _chaseTarget = (acquiredTarget != null && attackTarget == null) ? acquiredTarget : null;
+            _shouldMove = attackTarget == null;
         }
 
         private void FixedUpdate()
         {
             if (!_isActive) return;
-            if (_movementBehaviour == null) return;
+
+            ApplySeparation(Time.fixedDeltaTime);
+
             if (!_shouldMove) return;
 
-            _movementBehaviour.Tick(_rigidbody, Time.fixedDeltaTime);
+            if (_chaseTarget != null)
+            {
+                ChaseTarget(Time.fixedDeltaTime);
+            }
+            else if (_movementBehaviour != null)
+            {
+                _movementBehaviour.Tick(_rigidbody, Time.fixedDeltaTime);
+            }
         }
 
         public void TakeDamage(float amount, IDamageSource source)
@@ -135,15 +149,54 @@ namespace Creeps
             _shouldMove = true;
         }
 
-        private bool IsTargetInRange(IDamageable target)
+        private void ChaseTarget(float deltaTime)
         {
-            Vector3 from = Position;
-            Vector3 to = target.Position;
-            from.y = 0f;
-            to.y = 0f;
+            Vector3 currentPos = _rigidbody.position;
+            Vector3 targetPos = _chaseTarget.Position;
+            currentPos.y = 0f;
+            targetPos.y = 0f;
 
-            float range = _attackBehaviour.Range;
-            return (to - from).sqrMagnitude <= range * range;
+            Vector3 direction = (targetPos - currentPos).normalized;
+            _rigidbody.position += direction * (_movementBehaviour.Speed * deltaTime);
+
+            if (direction != Vector3.zero)
+            {
+                _rigidbody.rotation = Quaternion.Slerp(
+                    _rigidbody.rotation,
+                    Quaternion.LookRotation(direction),
+                    deltaTime * 10f);
+            }
+        }
+
+        private static readonly Collider[] _nearbyBuffer = new Collider[8];
+        private const float SeparationRadius = 0.6f;
+        private const float SeparationStrength = 2f;
+
+        private void ApplySeparation(float deltaTime)
+        {
+            int count = Physics.OverlapSphereNonAlloc(
+                _rigidbody.position, SeparationRadius, _nearbyBuffer);
+
+            Vector3 push = Vector3.zero;
+
+            for (int i = 0; i < count; i++)
+            {
+                if (_nearbyBuffer[i].attachedRigidbody == _rigidbody) continue;
+
+                Vector3 away = _rigidbody.position - _nearbyBuffer[i].transform.position;
+                away.y = 0f;
+                float dist = away.magnitude;
+
+                if (dist > 0f && dist < SeparationRadius)
+                {
+                    push += away.normalized * (1f - dist / SeparationRadius);
+                }
+            }
+
+            if (push.sqrMagnitude > 0f)
+            {
+                _rigidbody.position += push * (SeparationStrength * deltaTime);
+            }
         }
 
         private static void ConfigureRigidbody(Rigidbody rb)

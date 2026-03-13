@@ -1,0 +1,20 @@
+{
+    "name": "Structures",
+    "rootNamespace": "",
+    "references": [
+        "GUID:b0214a6008ed146ff8f122a6a9c2f6cc",
+        "GUID:c301b689d987542b2b874b369eef648b",
+        "GUID:ec3bcff466c55cf419263761e57b6cb1",
+        "GUID:b840dcf4b37f26143aebfa1e3910fd19",
+        "GUID:38de98ab792ec40c2ab848230592b278"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

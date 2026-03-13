@@ -12,4 +12,4 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 30d847bc3197b46d29864032607f786d, type: 3}
   m_Name: WaypointMovementFactory
   m_EditorClassIdentifier: Creeps::Creeps.Behaviour.Movement.WaypointMovementFactory
-  Speed: 1
+  Speed: 2

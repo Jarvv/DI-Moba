@@ -7,6 +7,8 @@ namespace Creeps.Behaviour.Movement
         private readonly float _speed;
         private const float _waypointThreshold = 0.1f;
 
+        public float Speed => _speed;
+
         private Vector3[] _waypoints;
         private int _currentWaypointIndex;
 

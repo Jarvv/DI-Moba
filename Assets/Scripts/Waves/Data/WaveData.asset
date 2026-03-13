@@ -16,3 +16,4 @@ MonoBehaviour:
   TimeBetweenWaves: 30
   Waves:
   - {fileID: 11400000, guid: d4e9a014b02d442df85962cfea814b4e, type: 2}
+  - {fileID: 11400000, guid: 2e4258aced5f14770876587a755e9269, type: 2}

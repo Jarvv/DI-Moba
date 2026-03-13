@@ -11,6 +11,7 @@ namespace Tests.EditMode.Stubs
         public float MaxHealth { get; }
         public Team Team { get; }
         public Vector3 Position { get; }
+        public Collider Collider => null;
         public bool IsAlive => CurrentHealth > 0;
         public event Action<float> DamageTaken;
 

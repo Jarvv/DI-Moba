@@ -1,4 +1,4 @@
-using Creeps.Behaviour.Attack;
+using Core.Combat;
 using Creeps.Behaviour.Movement;
 using UnityEngine;
 
@@ -16,6 +16,7 @@ namespace Creeps
         public MovementBehaviourFactory MovementFactory;
 
         [Header("Attack")]
+        public float AcquisitionRange = 8f;
         public AttackBehaviourFactory AttackFactory;
     }
 }

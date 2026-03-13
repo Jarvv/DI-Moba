@@ -1,7 +1,7 @@
 using Core.Pooling;
 using UnityEngine;
 
-namespace Creeps.Behaviour.Attack
+namespace Core.Combat
 {
     public abstract class AttackBehaviourFactory : ScriptableObject
     {

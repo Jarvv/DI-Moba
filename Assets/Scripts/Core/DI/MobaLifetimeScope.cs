@@ -6,6 +6,8 @@ using Creeps;
 using Game;
 using Game.UI;
 using Lanes;
+using Structures;
+using Structures.Towers;
 using UnityEngine;
 using VContainer;
 using VContainer.Unity;
@@ -56,6 +58,9 @@ namespace Core.DI
 
             // ── Combat System
             builder.Register<ITargetFinder, TargetFinder>(Lifetime.Singleton);
+
+            // ── Structure System
+            builder.RegisterEntryPoint<StructureLifecycle>();
 
             // ── EntryPoint
             builder.RegisterEntryPoint<CreepSpawner>();

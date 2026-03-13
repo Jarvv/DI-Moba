@@ -10,6 +10,7 @@ namespace Core.Combat
         float MaxHealth { get; }
         Team Team { get; }
         Vector3 Position { get; }
+        Collider Collider { get; }
         bool IsAlive { get; }
         event Action<float> DamageTaken;
         void TakeDamage(float amount, IDamageSource source);

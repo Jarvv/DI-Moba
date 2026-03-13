@@ -1,6 +1,6 @@
+using Core.Combat;
 using Core.Pooling;
 using Core.Teams;
-using Creeps.Behaviour.Attack;
 using Creeps.Behaviour.Movement;
 using System;
 using UnityEngine;

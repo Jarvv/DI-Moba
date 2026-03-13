@@ -26,7 +26,6 @@ namespace Creeps.Behaviour.Attack
         {
             if (!IsReady) return;
             if (!target.IsAlive) return;
-            if (Vector3.Distance(owner.position, target.Position) > Range) return;
 
             target.TakeDamage(Damage, source);
             _attackCooldown = 1f / AttackSpeed;
