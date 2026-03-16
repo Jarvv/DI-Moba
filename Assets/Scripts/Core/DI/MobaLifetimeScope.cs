@@ -1,9 +1,12 @@
 using Core.Combat;
 using Core.Events;
 using Core.Pooling;
+using Core.State;
 using Core.Teams;
 using Creeps;
 using Game;
+using Game.GameState;
+using Game.GameState.UI;
 using Game.UI;
 using Lanes;
 using Structures;
@@ -52,6 +55,8 @@ namespace Core.DI
 
             // ── Views
             builder.RegisterComponentInHierarchy<GoldView>();
+            builder.RegisterComponentInHierarchy<GameOverView>();
+            builder.RegisterComponentInHierarchy<ScreenManager>();
 
             // ── Lane System 
             builder.Register<IWaypointProvider, WaypointProvider>(Lifetime.Singleton);
@@ -61,6 +66,10 @@ namespace Core.DI
 
             // ── Structure System
             builder.RegisterEntryPoint<StructureLifecycle>();
+
+            // ── Game State
+            builder.RegisterEntryPoint<GameStateManager>().As<IGameState>();
+            builder.RegisterEntryPoint<GameOverViewModel>().As<IGameOverViewModel>();
 
             // ── EntryPoint
             builder.RegisterEntryPoint<CreepSpawner>();

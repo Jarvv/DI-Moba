@@ -15,5 +15,5 @@ MonoBehaviour:
   WaveName: 0
   CreepGroups:
   - Definition: {fileID: 11400000, guid: 98e1229d74b920c489a8022a3adc2494, type: 2}
-    Count: 3
+    Count: 1
     StaggerDelay: 1

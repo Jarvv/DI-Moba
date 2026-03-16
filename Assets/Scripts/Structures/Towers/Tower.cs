@@ -1,6 +1,7 @@
 using Core.Combat;
 using Core.Events;
 using Core.Pooling;
+using Core.State;
 using Core.Teams;
 using UnityEngine;
 using VContainer;
@@ -14,6 +15,7 @@ namespace Structures.Towers
         private ITargetFinder _targetFinder;
         private GameObjectPool _pool;
         private IAttackBehaviour _attackBehaviour;
+        private IGameState _gameState;
 
         protected override StructureDefinitionSO Definition => _towerDefinition;
 
@@ -21,11 +23,12 @@ namespace Structures.Towers
         public float Damage => _attackBehaviour.Damage;
 
         [Inject]
-        public void Construct(IEventBus eventBus, ITargetFinder targetFinder, GameObjectPool pool)
+        public void Construct(IEventBus eventBus, ITargetFinder targetFinder, GameObjectPool pool, IGameState gameState)
         {
             base.Construct(eventBus);
             _targetFinder = targetFinder;
             _pool = pool;
+            _gameState = gameState;
         }
 
         protected override void Start()
@@ -36,7 +39,7 @@ namespace Structures.Towers
 
         private void Update()
         {
-            if (!IsAlive) return;
+            if (!IsAlive || _gameState.IsGameOver) return;
 
             _attackBehaviour.Tick(Time.deltaTime);
 

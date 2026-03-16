@@ -14,7 +14,6 @@ namespace Structures
         private float _currentHealth;
         private bool _isActive;
         private IEventBus _eventBus;
-        private Collider _collider;
 
         protected abstract StructureDefinitionSO Definition { get; }
 
@@ -23,7 +22,6 @@ namespace Structures
         public float MaxHealth => Definition.Health;
         public Team Team => _team;
         public Vector3 Position => transform.position;
-        public Collider Collider => _collider;
         public bool IsAlive => _isActive && _currentHealth > 0;
 
         public event Action<float> DamageTaken;
@@ -41,7 +39,6 @@ namespace Structures
             _teamVisual = GetComponentInChildren<TeamVisual>();
             _teamVisual.SetTeam(_team);
 
-            _collider = GetComponentInChildren<Collider>();
             _isActive = true;
             _currentHealth = Definition.Health;
         }

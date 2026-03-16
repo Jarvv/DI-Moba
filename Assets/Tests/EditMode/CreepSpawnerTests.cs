@@ -1,7 +1,10 @@
 using System.Collections.Generic;
+using Core.Events;
+using Core.State;
 using Core.Teams;
 using Creeps;
 using Game;
+using Game.GameState;
 using Lanes;
 using NUnit.Framework;
 using UnityEngine;
@@ -15,6 +18,7 @@ namespace Tests.EditMode
         private WaveConfigSO _waveConfig;
         private LaneRegistry _laneRegistry;
         private StubWaypointProvider _waypointProvider;
+        private IGameState _gameState;
 
         private readonly List<Object> _cleanup = new();
 
@@ -46,6 +50,8 @@ namespace Tests.EditMode
                     RedWaypoints = new[] { redWP }
                 }
             };
+
+            _gameState = new GameStateManager(new EventBus());
         }
 
         [TearDown]
@@ -58,7 +64,7 @@ namespace Tests.EditMode
 
         private CreepSpawner CreateSpawner()
         {
-            return new CreepSpawner(_recorder, _waveConfig, _laneRegistry, _waypointProvider);
+            return new CreepSpawner(_recorder, _waveConfig, _laneRegistry, _waypointProvider, _gameState);
         }
 
         private WaveDefinitionSO CreateWave(int groupCount, int creepsPerGroup, float staggerDelay = 0f)

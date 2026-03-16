@@ -1,6 +1,7 @@
 using System;
 using Core.Combat;
 using Core.Events;
+using Core.State;
 using Core.Teams;
 using Creeps.Behaviour.Movement;
 using UnityEngine;
@@ -13,6 +14,7 @@ namespace Creeps
         // Injected behaviours
         private IEventBus _eventBus;
         private ITargetFinder _targetFinder;
+        private IGameState _gameState;
 
         // Factory behaviours
         private IMovementBehaviour _movementBehaviour;
@@ -26,7 +28,6 @@ namespace Creeps
         private bool _shouldMove;
         private IDamageable _chaseTarget;
         private Rigidbody _rigidbody;
-        private Collider _collider;
         private Vector3 _bodyInitialLocalPosition;
         private Quaternion _bodyInitialLocalRotation;
 
@@ -34,7 +35,6 @@ namespace Creeps
         private TeamVisual _teamVisual;
 
         // IDamageable
-        public Collider Collider => _collider;
         public Vector3 Position => _rigidbody.position;
         public float CurrentHealth => _currentHealth;
         public float MaxHealth => _definition.Health;
@@ -48,18 +48,17 @@ namespace Creeps
         public float Damage => _attackBehaviour.Damage;
 
         [Inject]
-        public void Construct(IEventBus eventBus, ITargetFinder targetFinder)
+        public void Construct(IEventBus eventBus, ITargetFinder targetFinder, IGameState gameState)
         {
             _eventBus = eventBus;
             _targetFinder = targetFinder;
+            _gameState = gameState;
         }
 
         private void Awake()
         {
             _teamVisual = GetComponentInChildren<TeamVisual>();
             _rigidbody = GetComponentInChildren<Rigidbody>();
-            _collider = _rigidbody.GetComponent<Collider>();
-
             _bodyInitialLocalPosition = _rigidbody.transform.localPosition;
             _bodyInitialLocalRotation = _rigidbody.transform.localRotation;
 
@@ -84,7 +83,7 @@ namespace Creeps
 
         private void Update()
         {
-            if (!_isActive) return;
+            if (!_isActive || _gameState.IsGameOver) return;
 
             _attackBehaviour.Tick(Time.deltaTime);
 
@@ -103,7 +102,7 @@ namespace Creeps
 
         private void FixedUpdate()
         {
-            if (!_isActive) return;
+            if (!_isActive || _gameState.IsGameOver) return;
 
             ApplySeparation(Time.fixedDeltaTime);
 

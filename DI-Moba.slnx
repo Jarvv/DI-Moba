@@ -27,6 +27,7 @@
   <Project Path="EditModeTests.csproj" />
   <Project Path="Unity.AI.Navigation.Editor.csproj" />
   <Project Path="Game.csproj" />
+  <Project Path="Core.State.csproj" />
   <Project Path="Structures.csproj" />
   <Project Path="Unity.InputSystem.ForUI.csproj" />
   <Project Path="Unity.AI.Navigation.csproj" />

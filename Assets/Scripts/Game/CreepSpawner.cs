@@ -1,3 +1,4 @@
+using Core.State;
 using Core.Teams;
 using Creeps;
 using Lanes;
@@ -13,6 +14,7 @@ namespace Game
         private readonly WaveConfigSO _waveConfig;
         private readonly LaneRegistry _laneConfig;
         private readonly IWaypointProvider _waypointProvider;
+        private readonly IGameState _gameState;
 
         private int _currentWaveIndex = 0;
         private int _currentGroupIndex = 0;
@@ -22,12 +24,13 @@ namespace Game
         private float _staggerTimer = 0f;
         private readonly Team[] _teams = { Team.Blue, Team.Red };
 
-        public CreepSpawner(ICreepFactory creepFactory, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider)
+        public CreepSpawner(ICreepFactory creepFactory, WaveConfigSO waveConfig, LaneRegistry laneConfig, IWaypointProvider waypointProvider, IGameState gameState)
         {
             _creepFactory = creepFactory;
             _waveConfig = waveConfig;
             _laneConfig = laneConfig;
             _waypointProvider = waypointProvider;
+            _gameState = gameState;
         }
 
         public void Start()
@@ -42,6 +45,8 @@ namespace Game
 
         public void Tick(float deltaTime)
         {
+            if (_gameState.IsGameOver) return;
+
             if (_isSpawning)
             {
                 StaggerSpawn(deltaTime);
